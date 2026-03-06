@@ -38,23 +38,6 @@ def load_csv_to_postgres(file_path, table_name, engine):
 def main():
     raw_data_path = Path(__file__).parent.parent.parent / 'data' / 'raw'
 
-    csv_files = {
-        'circuits.csv':               'circuits',
-        'constructor_results.csv':    'constructor_results',
-        'constructor_standings.csv':  'constructor_standings',
-        'constructors.csv':           'constructors',
-        'driver_standings.csv':       'driver_standings',
-        'drivers.csv':                'drivers',
-        'lap_times.csv':              'lap_times',
-        'pit_stops.csv':              'pit_stops',
-        'qualifying.csv':             'qualifying',
-        'races.csv':                  'races',
-        'results.csv':                'results',
-        'seasons.csv':                'seasons',
-        'sprint_results.csv':         'sprint_results',
-        'status.csv':                 'status'
-    }
-
     engine = create_db_engine()
 
     with engine.connect() as conn:
@@ -64,15 +47,16 @@ def main():
     success = 0
     failed = 0
 
-    for filename, table_name in csv_files.items():
-        file_path = raw_data_path / filename
-        if file_path.exists():
+    csv_files = raw_data_path.glob('*.csv')
+
+    for file_path in csv_files:
+        try:
+            table_name = file_path.stem
             load_csv_to_postgres(file_path, table_name, engine)
             success += 1
-        else:
-            logger.warning(f"Không tìm thấy file: {filename}")
+        except Exception as e:
             failed += 1
-    
+            logger.error(f'Lỗi khi load {file_path.stem}: {e}')
     logger.info(f"✓ Thành công: {success} bảng")
     logger.info(f"✗ Thất bại:   {failed} bảng")
 

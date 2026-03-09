@@ -46,8 +46,8 @@ FROM raw.results;
 -- Kiểm tra bảng drivers
 SELECT
     COUNT(*) AS tong_dong,
-    COUNT(*) FILTER (WHERE dob IS NULL) AS thieu_ngaysinh,
-    COUNT(*) FILTER (WHERE nationality IS NULL) AS thieu_quoctich
+    COUNT(*) FILTER (WHERE dob IS NULL) AS thieu_ngay_sinh,
+    COUNT(*) FILTER (WHERE nationality IS NULL) AS thieu_quoc_tich
 FROM raw.drivers;
 
 -- ===================================

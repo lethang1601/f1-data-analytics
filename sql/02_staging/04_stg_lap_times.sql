@@ -11,4 +11,3 @@ FROM raw.lap_times;
 
 CREATE INDEX idx_stg_lap_times_raceid ON staging.lap_times("raceId");
 CREATE INDEX idx_stg_lap_times_driverid ON staging.lap_times("driverId");
-
